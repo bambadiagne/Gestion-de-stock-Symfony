@@ -1,0 +1,61 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block body %}
+<div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div class="info-box blue-bg">
+              <i class="fa fa-cloud-download"></i>
+              <div class="count">6.674</div>
+              <div class="title">Download</div>
+            </div>
+            <!--/.info-box-->
+          </div>
+          <!--/.col-->
+
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div class="info-box brown-bg">
+              <i class="fa fa-shopping-cart"></i>
+              <div class="count">7.538</div>
+              <div class="title">Purchased</div>
+            </div>
+            <!--/.info-box-->
+          </div>
+          <!--/.col-->
+
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div class="info-box dark-bg">
+              <i class="fa fa-thumbs-o-up"></i>
+              <div class="count">{{numberOrder}}</div>
+              <div class="title">Commandes</div>
+            </div>
+            <!--/.info-box-->
+          </div>
+          <!--/.col-->
+
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div class="info-box green-bg">
+              <i class="fa fa-cubes"></i>
+              <div class="count">{{stockNumber}}</div>
+              <div class="title">Stock</div>
+            </div>
+            <!--/.info-box-->
+          </div>
+          <!--/.col-->
+
+        </div>
+         
+          <!--/col-->
+       
+          <!--/col-->
+       
+        </div>
+       <a  href="{{ path('dashboard_show')}}" class='btn btn-success' id="js-show">Afficher les graphiques</a>
+        <canvas  hidden id="doughnut-chart" class='js-chart' style="width:450px;height:250px;"></canvas>
+        <canvas hidden id="bar-chart" class='js-chart'  style="width:450px;height:250px;" ></canvas>
+        {% endblock %}
+      {% block javascripts %}
+  <script src="{{asset('assets/js/showChart.js')}}"></script>
+  
+      {% endblock %}  
