@@ -1,18 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'template.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>Liste des utilisateurs</h1>
 
-    <table class="table">
+    <table class="table table-condensed">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Username</th>
-                <th>Login</th>
-                <th>Pwd</th>
                 <th>Role</th>
+                
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,21 +20,20 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.login }}</td>
-                <td>{{ user.pwd }}</td>
                 <td>{{ user.role }}</td>
                 <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('user_show', {'id': user.id}) }}" class = "btn btn-info">show</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class = "btn btn-warning">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     <a href="{{ path('user_new') }}"class = "btn btn-success">Create new</a>
+
 {% endblock %}
