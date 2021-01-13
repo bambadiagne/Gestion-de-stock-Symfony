@@ -11,10 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProduitRepository;
-use App\Repository\LlivraisonRepository;
 use App\Form\LlivraisonType;
 use App\Repository\CompteurRepository;
-use App\Entity\Compteur;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -98,7 +96,7 @@ class LivraisonController extends AbstractController
         else
         {
         $name = $session->get('name');
-        $compteur = $compteurRepository->find(1);
+        $compteur = $compteurRepository->findBy(array(), array('numcom' => 'DESC'), 1, 0)[0];
         $numl= $compteur->getNuml();
         
         if (!$session->has('liv'))
