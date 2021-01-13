@@ -32,6 +32,7 @@ class ReglementController extends AbstractController
         {
         $name = $session->get('name');
         return $this->render('reglement/index.html.twig', [
+            'name'=>$name,
             'reglements' => $reglementRepository->findAll(),
         ]);
     }

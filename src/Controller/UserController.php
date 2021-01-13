@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\ClientRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,7 @@ class UserController extends AbstractController
     {
         $session = $request->getSession();
         $name = $session->get('name');
-
+       
         return $this->render('user/index.html.twig', [
             'name' => $name,
             'users' => $userRepository->findAll(),
@@ -36,13 +37,14 @@ class UserController extends AbstractController
     /**
      * @Route("/dash", name="dashboard")
      */
-    public function dash(Request $request, CommandeRepository $order, ProduitRepository $product)
+    public function dash(Request $request, CommandeRepository $order, ProduitRepository $product,ClientRepository $client)
     {
         $session = $request->getSession();
         $name = $session->get('name');
         $numberOrder = count($order->findAll());
         $stocknumber = 0;
         $allProducts = $product->findAll();
+        $allClients=sizeof($client->findAll());
         for ($i = 0; $i < count($allProducts); $i++) {
             $stocknumber = $stocknumber + $allProducts[$i]->getStock();
         }
@@ -50,6 +52,7 @@ class UserController extends AbstractController
             'name' => $name,
             'numberOrder' => $numberOrder,
             'stockNumber' => $stocknumber,
+            'allClients' => $allClients,
         ]);
     }
     /**
@@ -106,7 +109,7 @@ class UserController extends AbstractController
     /**
      * @Route("/login", name="user_login", methods={"GET","POST"})
      */
-    public function login(Request $request, UserRepository $userRepository, CommandeRepository $order, ProduitRepository $product): Response
+    public function login(Request $request, UserRepository $userRepository, CommandeRepository $order, ProduitRepository $product,ClientRepository $clientRepository): Response
     {
         $session = $request->getSession();
         $session->clear();
@@ -145,12 +148,14 @@ class UserController extends AbstractController
                     $numberOrder = count($order->findAll());
                     $stocknumber = 0;
                     $allProducts = $product->findAll();
+                    $allClients=$clientRepository->findAll();
                     for ($i = 0; $i < count($allProducts); $i++) {
                         $stocknumber = $stocknumber + $allProducts[$i]->getStock();
                     }
 
                     return $this->render('user/dashboard.html.twig', [
                         'name' => $name,
+                        'allClients'=>count($allClients),
                         'numberOrder' => $numberOrder,
                         'stockNumber' => $stocknumber,
 
@@ -195,7 +200,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $user->setPwd(password_hash($user->getPwd(), PASSWORD_DEFAULT));
+    
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_index');
